@@ -1,10 +1,10 @@
-#include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-#include "parser.h"
-#include "match.h"
+#include "lib/include/parser.h"
+#include "lib/include/match.h"
 
 #define MAX_INPUT_LENGTH 256
+
+void check_graph(Graph *regex);
 
 int main() {
     char regex[MAX_INPUT_LENGTH];
@@ -14,12 +14,11 @@ int main() {
     fgets(regex, MAX_INPUT_LENGTH, stdin);
     regex[strlen(regex)-1] = '\0';
 
-    // Parse regex to their node placements
     Graph *parsed_regex = NULL;
-    parsed_regex = parse_regex(parsed_regex, regex);
+    parsed_regex = parse_regex(regex);
 
     do {
-        printf("\nEnter a String to match. Current regex - %s: ", regex);
+        printf("\nEnter a String to match.\n Current regex - %s: ", regex);
         fgets(string, MAX_INPUT_LENGTH, stdin);
         string[strlen(string)-1] = '\0';        
 
@@ -29,9 +28,10 @@ int main() {
             regex[strlen(regex)-1] = '\0';
 
             deconstruct(parsed_regex);
+            free(parsed_regex);
 
             // Parse with new regex
-            parse_regex(parsed_regex, regex);
+            parsed_regex = parse_regex(regex);
             continue;
         }
         else if (strcmp(string, "end") == 0) {
@@ -39,8 +39,7 @@ int main() {
         }
         else {
             int matched = match(parsed_regex, string);
-            // match the regex with the given string
-            // print results
+
             if (matched == 1)
                 printf("The string (%s) matches\n", string);
             else
@@ -54,4 +53,50 @@ int main() {
     free(parsed_regex);
 
     return 0;
+}
+
+void print_special(uint8_t c) {
+    switch (c) {
+    case GOAL:
+        printf("Goal node!!!!");
+        break;
+    case EPSILON:
+        printf("Epsilon node----");
+        break;
+    default:
+        printf("%c ", c);
+        break;
+    }
+}
+
+void check_graph(Graph *regex) {
+    Node *curr_node = regex->nodes;
+    int counter = 0;
+
+    printf("Checking Graph------------\n");
+
+    while (curr_node != NULL) {
+        printf("Printing curr_node character: ");
+        for (int i = 0; i < curr_node->length; ++i) {
+            print_special(curr_node->character[i]);
+            // printf("%c ", curr_node->character[i]);
+        }
+        printf("\n");
+        Node *left_node = curr_node->left;
+        Node *right_node = curr_node->right;
+        while (right_node != NULL && right_node != curr_node) {
+            printf("--Printing right_node character: ");
+            for (int i = 0; i < right_node->length; ++i) {
+                print_special(right_node->character[i]);
+                // printf("%c ", right_node->character[i]);
+            }
+            printf("\n");
+            right_node = right_node->left; 
+            ++counter;
+        }
+        curr_node = left_node;
+        ++counter;
+        
+    }
+    printf("Number of counted nodes: %d", counter);
 }
