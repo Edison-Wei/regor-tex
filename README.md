@@ -33,13 +33,9 @@ Then use the following command to run the files:
 ```
 
 ## Video example
-[Link](#video-example)
+<video src="https://github.com/user-attachments/assets/5b488d33-358b-4566-99c0-5cfc781cf16f" width="100%" controls></video>
 
 ### Requirements
 - gcc
 
 The `makefile` will be compiled with `gcc`.
-
-docker run -it --rm regex-project
-
-docker run --entrypoint /app/regex_test --rm regex-project
