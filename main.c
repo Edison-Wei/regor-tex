@@ -18,7 +18,7 @@ int main() {
     parsed_regex = parse_regex(regex);
 
     do {
-        printf("\nEnter a String to match.\n Current regex - %s: ", regex);
+        printf("\nEnter a String to match.\nCurrent regex - %s: ", regex);
         fgets(string, MAX_INPUT_LENGTH, stdin);
         string[strlen(string)-1] = '\0';        
 

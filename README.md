@@ -6,6 +6,22 @@ An experimental Regular Expression (regex) engine built from scratch, using the 
 - Construct state transitions based on node type (or epsilon for trivial transitions)
 
 ## Usage
+#### Build with Dockerfile
+Use the `Dockerfile` to build and compile all required files:
+To build, make sure you have `docker` along with `alpine:latest` on your system.
+
+Then:
+```cmd
+    docker build -t regex-project . 
+```
+
+Then to execute either programs:
+```cmd
+    docker run -it --rm regex-project #To run the main regex engine
+    docker run --entrypoint /app/regex_test --rm regex-project #To run the test program
+```
+
+#### Build with Makefile
 Use the `makefile` to easily compile all files required into two executables:
 ```cmd
     make all # Creates two files 'regex' and 'regex_test'
@@ -23,3 +39,7 @@ Then use the following command to run the files:
 - gcc
 
 The `makefile` will be compiled with `gcc`.
+
+docker run -it --rm regex-project
+
+docker run --entrypoint /app/regex_test --rm regex-project
